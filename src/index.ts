@@ -5,6 +5,7 @@ import cookieParser from 'cookie-parser';
 import compression from 'compression';
 import cors from 'cors';
 import mongoose, { mongo } from 'mongoose';
+import router from './router'
 
 const app = express();
 const uri = "mongodb://mongoadmin:secret@localhost:27017/?authSource=admin";
@@ -17,10 +18,6 @@ app.use(compression())
 app.use(cookieParser())
 app.use(bodyParser.json())
 
-app.get('/', (req, res) => {
-    res.send('It works!');
-});
-
 const server = http.createServer(app);
 
 server.listen(8080, () => {
@@ -30,3 +27,5 @@ server.listen(8080, () => {
 mongoose.Promise = Promise;
 mongoose.connect(uri);
 mongoose.connection.on('error', (error: any) => console.log(error));
+
+app.use('/', router())
